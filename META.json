@@ -1,7 +1,7 @@
 {
-   "abstract" : "Blah blah blah",
+   "abstract" : "a middleware to track usage information with Matomo",
    "author" : [
-      "Vitali Peil <vitali.peil@uni-bielefeld.de>"
+      "Vitali Peil <vitali.peil at uni-bielefeld.de>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Dist::Milla version v1.0.20, Dist::Zilla version 6.012, CPAN::Meta::Converter version 2.150010",
@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : 2
    },
-   "name" : "Plack-Middleware-OpenAireMetrics",
+   "name" : "Plack-Middleware-Matomo",
    "no_index" : {
       "directory" : [
          "eg",
@@ -37,7 +37,12 @@
       },
       "runtime" : {
          "requires" : {
-            "perl" : "5.008005"
+            "AnyEvent::HTTP" : "0",
+            "Dancer" : "0",
+            "Plack" : "0",
+            "Plack::Handler::Twiggy" : "0",
+            "URI" : "0",
+            "perl" : "v5.10.1"
          }
       },
       "test" : {
@@ -47,9 +52,23 @@
       }
    },
    "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/vpeil/Plack-Middleware-Matomo/issues"
+      },
+      "homepage" : "https://github.com/vpeil/Plack-Middleware-Matomo",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/vpeil/Plack-Middleware-Matomo.git",
+         "web" : "https://github.com/vpeil/Plack-Middleware-Matomo"
+      }
+   },
    "version" : "0.01",
+   "x_contributors" : [
+      "Vitali Peil <vitali.peil@uni-bielefeld.de>"
+   ],
    "x_generated_by_perl" : "v5.28.0",
-   "x_serialization_backend" : "Cpanel::JSON::XS version 4.04",
+   "x_serialization_backend" : "Cpanel::JSON::XS version 4.08",
    "x_static_install" : 1
 }
 
