@@ -1,7 +1,10 @@
-/Plack-Middleware-OpenAireMetrics-*
-/.build
-/_build*
-/Build
-MYMETA.*
 !META.json
+/.build
 /.prove
+/Build
+/Plack-Middleware-OpenAireMetrics-*
+/_build*
+MYMETA.*
+cpanfile.snapshot
+local/*
+.tidyall.d/*
