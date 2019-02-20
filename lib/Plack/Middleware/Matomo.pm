@@ -77,7 +77,7 @@ sub _anonymize_ip {
 sub _push_to_openaire {
     my ($self, $event) = @_;
 
-    my $uri = URI->new($self->openaire_endpoint);
+    my $uri = URI->new($self->base_url);
     $uri->query_form($event);
 
     http_head $uri->as_string, sub {return;};
