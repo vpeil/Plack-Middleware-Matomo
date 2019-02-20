@@ -2,7 +2,7 @@
 /.build
 /.prove
 /Build
-/Plack-Middleware-OpenAireMetrics-*
+/Plack-Middleware-Matomo-*
 /_build*
 MYMETA.*
 cpanfile.snapshot
