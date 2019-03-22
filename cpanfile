@@ -6,7 +6,7 @@ on test => sub {
 };
 
 requires 'AnyEvent::HTTP';
-requires 'Dancer';
+requires 'Net::SSLeay', '1.85';
 requires 'Plack';
-requires 'Plack::Handler::Twiggy';
 requires 'URI';
+requires 'Starman';
