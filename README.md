@@ -7,8 +7,8 @@ Plack::Middleware::Matomo - a middleware to track usage information with Matomo
     builder {
         enable "Plack::Middleware::Matomo",
             id_site => "my-service",
-            base_url => "https://somewhere.eu/matomo",
-            auth_token => "secr3t",
+            base_url => "https://analytics.openaire.eu/piwik.php",
+            token_auth => "secr3t",
             view_paths => ['record/(\w+)/*'],
             download_paths => ['download/(\w+)/*'],
             oai_identifier_format => 'oai:test.server.org:%s',
@@ -40,7 +40,7 @@ Plack::Middleware::Matomo - a middleware to track usage information with Matomo
 
 # DESCRIPTION
 
-tbd.
+Following the spec from [https://developer.matomo.org/api-reference/tracking-api](https://developer.matomo.org/api-reference/tracking-api).
 
 # AUTHOR
 
