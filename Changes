@@ -1,6 +1,9 @@
-Revision history for Plack-Middleware-OpenAireMetrics
+Revision history for Plack-Middleware-Matomo
 
 {{$NEXT}}
+
+0.04  2019-04-24 17:06:51 CEST
+    - add missing prereq
 
 0.03  2019-04-24 15:36:30 CEST
     - error handling
