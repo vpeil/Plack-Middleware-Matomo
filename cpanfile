@@ -10,3 +10,4 @@ requires 'Dancer';
 requires 'Plack';
 requires 'Plack::Handler::Twiggy';
 requires 'URI';
+requires 'Log::Any';
