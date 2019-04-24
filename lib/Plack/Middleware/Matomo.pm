@@ -1,14 +1,14 @@
 package Plack::Middleware::Matomo;
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';
 
 use strict;
 use warnings;
 use AnyEvent::HTTP;
-use POSIX qw(strftime);
+use Log::Any qw($log);
 use Plack::Request;
 use Plack::Util::Accessor
-    qw(base_url id_site time_format oai_identifier_format view_paths download_paths);
+    qw(apiv base_url idsite token_auth time_format oai_identifier_format view_paths download_paths);
 use URI;
 
 use parent 'Plack::Middleware';
@@ -26,6 +26,8 @@ sub call {
     my $view_paths     = $self->view_paths;
     my $download_paths = $self->download_paths;
 
+    $log->info("Entering Matomo middleware at " . $request->path);
+
     foreach my $p (@$view_paths) {
         if ($request->path =~ /$p/) {
             $id     = $1;
@@ -42,26 +44,35 @@ sub call {
     }
 
     return $res unless $action;
+    $log->info("Action: $action");
 
     my $time_format = $self->time_format // '%Y-%m-%dT%H:%M:%SZ';
-    my $now         = strftime($time_format, gmtime(time));
     my $ip          = $self->_anonymize_ip($request->address);
     my $oai_id      = sprintf($self->oai_identifier_format, $id);
     my $cvar        = '{"1":["oaipmhID","' . $oai_id . '"]}';
 
+    my $rand = int(rand(10000));
+
     my $event = {
-        rec       => 1,
-        idSite    => $self->id_site,
-        visitIP   => $ip,
-        action    => $action,
-        url       => $request->request_uri,
-        timestamp => $now,
-        agent     => $request->user_agent // '',
-        referer   => $request->referer // '',
-        cvar      => $cvar,
+        _id         => $request->session // '',
+        action_name => $action,
+        apiv        => $self->apiv // 1,
+        cvar        => $cvar,
+        idsite      => $self->idsite,
+        rand        => $rand,
+        rec         => 1,
+        token_auth  => $self->token_auth,
+        ua          => $request->user_agent // 'Mozilla',
+        url         => $request->uri,
+        urlref      => $request->referer // '',
+        visitIP     => $ip,
     };
 
-    $self->_push_to_openaire($event);
+    if ($action eq 'download') {
+        $event->{download} = $request->uri;
+    }
+
+    $self->_push_to_matomo($event);
 
     return $res;
 }
@@ -74,13 +85,23 @@ sub _anonymize_ip {
     return $ip;
 }
 
-sub _push_to_openaire {
+sub _push_to_matomo {
     my ($self, $event) = @_;
 
     my $uri = URI->new($self->base_url);
     $uri->query_form($event);
 
-    http_head $uri->as_string, sub {return;};
+    $log->debug("URL: " . $uri->as_string);
+
+    http_head $uri->as_string, sub {
+        my ($body, $hdr) = @_;
+
+       if ($hdr->{Status} =~ /^2/) {
+          # ok
+       } else {
+          $log->error("Could not reach analytics endpoint: $hdr->{Status} $hdr->{Reason} for " . $uri->as_string);
+       }
+   };
 }
 
 1;
@@ -98,8 +119,8 @@ Plack::Middleware::Matomo - a middleware to track usage information with Matomo
     builder {
         enable "Plack::Middleware::Matomo",
             id_site => "my-service",
-            base_url => "https://somewhere.eu/matomo",
-            auth_token => "secr3t",
+            base_url => "https://analytics.openaire.eu/piwik.php",
+            token_auth => "secr3t",
             view_paths => ['record/(\w+)/*'],
             download_paths => ['download/(\w+)/*'],
             oai_identifier_format => 'oai:test.server.org:%s',
@@ -135,7 +156,7 @@ Required. The format of the OAI identifier format of the repository.
 
 =head1 DESCRIPTION
 
-tbd.
+Following the spec from L<https://developer.matomo.org/api-reference/tracking-api>.
 
 =head1 AUTHOR
 
