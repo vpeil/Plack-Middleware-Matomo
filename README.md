@@ -4,6 +4,8 @@ Plack::Middleware::Matomo - a middleware to track usage information with Matomo
 
 # SYNOPSIS
 
+    # in your bin/app.pl
+
     builder {
         enable "Plack::Middleware::Matomo",
             id_site => "my-service",
@@ -15,6 +17,9 @@ Plack::Middleware::Matomo - a middleware to track usage information with Matomo
             ;
         $app;
     }
+
+    # start your plack application with Twiggy as webserver
+    $ plackup --server Twiggy bin/app.pl
 
 # CONFIGURATION
 
@@ -57,4 +62,4 @@ it under the same terms as Perl itself.
 
 # SEE ALSO
 
-[Plack::Middleware](https://metacpan.org/pod/Plack::Middleware), [Plack::Builder](https://metacpan.org/pod/Plack::Builder)
+[Plack::Middleware](https://metacpan.org/pod/Plack::Middleware), [Plack::Builder](https://metacpan.org/pod/Plack::Builder), [Twiggy](https://metacpan.org/pod/Twiggy)
