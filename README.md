@@ -43,6 +43,14 @@ Plack::Middleware::Matomo - a middleware to track usage information with Matomo
 
     Required. The format of the OAI identifier format of the repository.
 
+- ua
+
+    Set to 1 if user agent information should be passed to matomo.
+
+- urlref
+
+    Set to 1 if url referer should be passed to matomo.
+
 # DESCRIPTION
 
 Following the spec from [https://developer.matomo.org/api-reference/tracking-api](https://developer.matomo.org/api-reference/tracking-api).

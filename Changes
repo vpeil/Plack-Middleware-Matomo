@@ -2,6 +2,10 @@ Revision history for Plack-Middleware-Matomo
 
 {{$NEXT}}
 
+0.10  2019-05-06 12:28:54 CEST
+    - make 'ua' and 'urlref' optional paramters to be passed
+      to matomo
+
 0.05  2019-04-25 12:08:00 CEST
     - add debug messages
     - more documentation
